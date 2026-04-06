@@ -1,47 +1,103 @@
-import java.util.ArrayList;
-import java.util.List;
+// ---------------- UC14 (reuse) ----------------
+class InvalidCapacityException extends Exception {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
+}
 
+class PassengerBogie {
+    private String type;
+    private int capacity;
+
+    public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            throw new InvalidCapacityException("Capacity must be greater than zero");
+        }
+        this.type = type;
+        this.capacity = capacity;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+}
+
+// ---------------- UC15 START ----------------
+
+// Custom Runtime Exception
+class CargoSafetyException extends RuntimeException {
+    public CargoSafetyException(String message) {
+        super(message);
+    }
+}
+
+// Goods Bogie Class
+class GoodsBogie {
+    private String shape;   // Rectangular / Cylindrical
+    private String cargo;   // Petroleum / Food / etc.
+
+    public GoodsBogie(String shape) {
+        this.shape = shape;
+        this.cargo = null;
+    }
+
+    public String getShape() {
+        return shape;
+    }
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    // CORE LOGIC: try-catch-finally inside method
+    public void assignCargo(String cargoType) {
+        try {
+            // Safety validation
+            if (shape.equalsIgnoreCase("Rectangular") &&
+                    cargoType.equalsIgnoreCase("Petroleum")) {
+
+                throw new CargoSafetyException(
+                        "Unsafe cargo: Petroleum cannot be assigned to Rectangular bogie"
+                );
+            }
+
+            // Safe assignment
+            this.cargo = cargoType;
+            System.out.println("Cargo assigned successfully: " + cargoType);
+
+        } catch (CargoSafetyException e) {
+            // Handle exception internally (IMPORTANT)
+            System.out.println("Error: " + e.getMessage());
+
+        } finally {
+            // MUST always execute
+            System.out.println("Cargo assignment attempt completed.");
+        }
+    }
+}
+
+// ---------------- MAIN ----------------
 public class Main {
-
     public static void main(String[] args) {
 
-        // Welcome Message
-        System.out.println("=== Train Consist Management App ===");
+        // Safe case
+        GoodsBogie bogie1 = new GoodsBogie("Cylindrical");
+        bogie1.assignCargo("Petroleum");
 
-        // UC1: Initialize Train Consist
-        List<String> trainConsist = new ArrayList<>();
-        System.out.println("Train consist initialized.");
-        System.out.println("Initial bogie count: " + trainConsist.size());
+        System.out.println();
 
-        // ---------------- UC2 START ----------------
+        // Unsafe case
+        GoodsBogie bogie2 = new GoodsBogie("Rectangular");
+        bogie2.assignCargo("Petroleum");
 
-        // Create Passenger Bogie List
-        List<String> passengerBogies = new ArrayList<>();
+        System.out.println();
 
-        // Add Passenger Bogies
-        passengerBogies.add("Sleeper");
-        passengerBogies.add("AC Chair");
-        passengerBogies.add("First Class");
-
-        // Display Bogies after Addition
-        System.out.println("\nPassenger bogies after addition:");
-        System.out.println(passengerBogies);
-
-        // Remove a Bogie (AC Chair)
-        passengerBogies.remove("AC Chair");
-
-        // Display after Removal
-        System.out.println("\nPassenger bogies after removal:");
-        System.out.println(passengerBogies);
-
-        // Check if Sleeper exists
-        boolean exists = passengerBogies.contains("Sleeper");
-        System.out.println("\nDoes Sleeper bogie exist? " + exists);
-
-        // Final State
-        System.out.println("\nFinal passenger bogie list:");
-        System.out.println(passengerBogies);
-
-        // ---------------- UC2 END ----------------
+        // Program should CONTINUE
+        GoodsBogie bogie3 = new GoodsBogie("Rectangular");
+        bogie3.assignCargo("Food");
     }
 }
