@@ -1,50 +1,47 @@
-// Custom exception class for invalid passenger bogie capacity
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String message) {
-        super(message);
-    }
-}
+import java.util.ArrayList;
+import java.util.List;
 
-// Passenger bogie class with capacity validation
-class PassengerBogie {
-    private String type;
-    private int capacity;
-
-    // Constructor enforces fail-fast validation
-    public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be greater than zero");
-        }
-        this.type = type;
-        this.capacity = capacity;
-    }
-
-    // Getters
-    public String getType() {
-        return type;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    @Override
-    public String toString() {
-        return "PassengerBogie{" +
-                "type='" + type + '\'' +
-                ", capacity=" + capacity +
-                '}';
-    }
-}
-
-// Example usage
 public class Main {
+
     public static void main(String[] args) {
-        try {
-            PassengerBogie sleeper = new PassengerBogie("Sleeper", 72);
-            PassengerBogie acChair = new PassengerBogie("AC Chair", 0); // This will throw exception
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error creating bogie: " + e.getMessage());
-        }
+
+        // Welcome Message
+        System.out.println("=== Train Consist Management App ===");
+
+        // UC1: Initialize Train Consist
+        List<String> trainConsist = new ArrayList<>();
+        System.out.println("Train consist initialized.");
+        System.out.println("Initial bogie count: " + trainConsist.size());
+
+        // ---------------- UC2 START ----------------
+
+        // Create Passenger Bogie List
+        List<String> passengerBogies = new ArrayList<>();
+
+        // Add Passenger Bogies
+        passengerBogies.add("Sleeper");
+        passengerBogies.add("AC Chair");
+        passengerBogies.add("First Class");
+
+        // Display Bogies after Addition
+        System.out.println("\nPassenger bogies after addition:");
+        System.out.println(passengerBogies);
+
+        // Remove a Bogie (AC Chair)
+        passengerBogies.remove("AC Chair");
+
+        // Display after Removal
+        System.out.println("\nPassenger bogies after removal:");
+        System.out.println(passengerBogies);
+
+        // Check if Sleeper exists
+        boolean exists = passengerBogies.contains("Sleeper");
+        System.out.println("\nDoes Sleeper bogie exist? " + exists);
+
+        // Final State
+        System.out.println("\nFinal passenger bogie list:");
+        System.out.println(passengerBogies);
+
+        // ---------------- UC2 END ----------------
     }
 }
