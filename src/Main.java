@@ -1,40 +1,50 @@
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
 
-class BogieSearchTest {
+// ---------------- UC19: Binary Search ----------------
 
-    @Test
-    void testSearch_BogieFound() {
-        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+class BinarySearchUtil {
 
-        assertTrue(BogieSearchUtil.searchBogieById(arr, "BG309"));
+    public static boolean binarySearch(String[] bogieIds, String key) {
+
+        int low = 0;
+        int high = bogieIds.length - 1;
+
+        while (low <= high) {
+
+            int mid = low + (high - low) / 2;
+
+            int comparison = key.compareTo(bogieIds[mid]);
+
+            if (comparison == 0) {
+                return true; // Found
+            } else if (comparison > 0) {
+                low = mid + 1; // Search right half
+            } else {
+                high = mid - 1; // Search left half
+            }
+        }
+
+        return false; // Not found
     }
+}
 
-    @Test
-    void testSearch_BogieNotFound() {
-        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+// ---------------- MAIN ----------------
+public class Main {
+    public static void main(String[] args) {
 
-        assertFalse(BogieSearchUtil.searchBogieById(arr, "BG999"));
-    }
+        String[] bogieIds = {"BG101","BG205","BG309","BG412","BG550"};
 
-    @Test
-    void testSearch_FirstElementMatch() {
-        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        // Ensure sorted (MANDATORY)
+        Arrays.sort(bogieIds);
 
-        assertTrue(BogieSearchUtil.searchBogieById(arr, "BG101"));
-    }
+        String searchKey = "BG309";
 
-    @Test
-    void testSearch_LastElementMatch() {
-        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+        boolean found = BinarySearchUtil.binarySearch(bogieIds, searchKey);
 
-        assertTrue(BogieSearchUtil.searchBogieById(arr, "BG550"));
-    }
-
-    @Test
-    void testSearch_SingleElementArray() {
-        String[] arr = {"BG101"};
-
-        assertTrue(BogieSearchUtil.searchBogieById(arr, "BG101"));
+        if (found) {
+            System.out.println("Bogie found: " + searchKey);
+        } else {
+            System.out.println("Bogie not found: " + searchKey);
+        }
     }
 }
