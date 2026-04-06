@@ -1,33 +1,40 @@
-import java.util.Arrays;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-// ---------------- UC17: Arrays.sort() ----------------
+class BogieSearchTest {
 
-class BogieSorter {
+    @Test
+    void testSearch_BogieFound() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
 
-    // Method to sort bogie names
-    public static void sortBogieNames(String[] bogies) {
-        Arrays.sort(bogies);
+        assertTrue(BogieSearchUtil.searchBogieById(arr, "BG309"));
     }
-}
 
-// ---------------- MAIN ----------------
-public class Main {
-    public static void main(String[] args) {
+    @Test
+    void testSearch_BogieNotFound() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
 
-        String[] bogieTypes = {
-                "Sleeper",
-                "AC Chair",
-                "First Class",
-                "General",
-                "Luxury"
-        };
+        assertFalse(BogieSearchUtil.searchBogieById(arr, "BG999"));
+    }
 
-        System.out.println("Before Sorting:");
-        System.out.println(Arrays.toString(bogieTypes));
+    @Test
+    void testSearch_FirstElementMatch() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
 
-        BogieSorter.sortBogieNames(bogieTypes);
+        assertTrue(BogieSearchUtil.searchBogieById(arr, "BG101"));
+    }
 
-        System.out.println("After Sorting:");
-        System.out.println(Arrays.toString(bogieTypes));
+    @Test
+    void testSearch_LastElementMatch() {
+        String[] arr = {"BG101","BG205","BG309","BG412","BG550"};
+
+        assertTrue(BogieSearchUtil.searchBogieById(arr, "BG550"));
+    }
+
+    @Test
+    void testSearch_SingleElementArray() {
+        String[] arr = {"BG101"};
+
+        assertTrue(BogieSearchUtil.searchBogieById(arr, "BG101"));
     }
 }
